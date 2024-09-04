@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "842473856335",
+    "project_id": "didirooms-b51af",
+    "storage_bucket": "didirooms-b51af.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:842473856335:android:210c9d2f8e2294a6fb393a",
+        "android_client_info": {
+          "package_name": "com.example.didi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiiLdMez-pWvzwi6pFYKfwYns9AUPsIzI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
