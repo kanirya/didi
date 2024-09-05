@@ -1,37 +1,41 @@
 
 
 
+import 'package:didi/screens/Home/Home_screen.dart';
+import 'package:didi/screens/login/information_screen.dart';
+import 'package:didi/screens/login/provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
+import 'package:provider/provider.dart';
 
 import '../../Helpers/custom.dart';
 
-class DriverOtpScreen extends StatefulWidget {
+class OtpScreen extends StatefulWidget {
   final String verificationID;
 
-  const DriverOtpScreen({super.key, required this.verificationID});
+  const OtpScreen({super.key, required this.verificationID});
 
   @override
-  State<DriverOtpScreen> createState() => _DriverOtpScreenState();
+  State<OtpScreen> createState() => _OtpScreenState();
 }
 
-class _DriverOtpScreenState extends State<DriverOtpScreen> {
+class _OtpScreenState extends State<OtpScreen> {
   String? otpcode;
 
   @override
   Widget build(BuildContext context) {
-    // final isLoading =
-    //     Provider.of<AuthProvider>(context, listen: true).isLoading;
+     final isLoading =
+         Provider.of<AuthProvider>(context, listen: true).isLoading;
     return Scaffold(
       body: SafeArea(
         child:
-        // isLoading == true
-        //     ? const Center(
-        //   child: CircularProgressIndicator(
-        //     color: Colors.purple,
-        //   ),
-        // )
-        //     :
+        isLoading == true
+            ? const Center(
+          child: CircularProgressIndicator(
+            color: Colors.yellow,
+          ),
+        )
+            :
         Center(
           child: Padding(
             padding: EdgeInsets.symmetric(
@@ -83,7 +87,7 @@ class _DriverOtpScreenState extends State<DriverOtpScreen> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
                       border:
-                      Border.all(color: Colors.redAccent.shade200),
+                      Border.all(color: Colors.yellow.shade200),
                     ),
                     textStyle: const TextStyle(
                         fontSize: 20, fontWeight: FontWeight.w600)),
@@ -103,7 +107,7 @@ class _DriverOtpScreenState extends State<DriverOtpScreen> {
                   text: "Verify",
                   onPressed: () {
                     if (otpcode != null) {
-                  //    verifyOtp(context, otpcode!);
+                      verifyOtp(context, otpcode!);
                     } else {
                       showSnackBar(context, "Enter 6-Digits code");
                     }
@@ -137,7 +141,7 @@ class _DriverOtpScreenState extends State<DriverOtpScreen> {
     );
   }
 
-  /*void verifyOtp(BuildContext context, String userOtp) {
+  void verifyOtp(BuildContext context, String userOtp) {
     final ap = Provider.of<AuthProvider>(context, listen: false);
     ap.verifyOtp(
       context: context,
@@ -147,14 +151,14 @@ class _DriverOtpScreenState extends State<DriverOtpScreen> {
         ap.checkExistingUser().then(
               (value) async {
             if (value == true) {
-              ap.getDataFromFireStore().then(
-                    (value) => ap.saveDriverDataToSP().then(
-                      (value) => ap.setSignIn().then(
-                        (value) => Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
+               ap.getDataFromFirestore().then(
+                     (value) => ap.saveUserDataToSp().then(
+                       (value) => ap.setSignIn().then(
+                         (value) => Navigator.pushAndRemoveUntil(
+                         context,
+                         MaterialPageRoute(
                             builder: (context) =>
-                            const NavigationMenu()),
+                            const homeScreen()),
                             (route) => false),
                   ),
                 ),
@@ -164,12 +168,12 @@ class _DriverOtpScreenState extends State<DriverOtpScreen> {
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const DriverInformationScreen()),
+                      builder: (context) => const informationScreen()),
                       (route) => false);
             }
           },
         );
       },
     );
-  }*/
+  }
 }

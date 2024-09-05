@@ -1,16 +1,19 @@
 import 'package:country_picker/country_picker.dart';
+import 'package:didi/screens/Home/Home_screen.dart';
+import 'package:didi/screens/login/provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../../Helpers/custom.dart';
 import '../../Helpers/global_variables.dart';
-
 
 class loginScreen extends StatelessWidget {
   const loginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final ap = Provider.of<AuthProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: Color(0xFFF5F5F5),
       body: Center(
@@ -21,8 +24,16 @@ class loginScreen extends StatelessWidget {
             CustomButton(
                 text: "Get Started",
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => loginScreen2()));
+                  ap.isSignedIn == true
+                      ? Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (context) => homeScreen()),
+                          (Route<dynamic> route) => false,
+                        )
+                      : Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => loginScreen2()));
                 })
           ],
         ),
@@ -86,19 +97,19 @@ class _loginScreen2State extends State<loginScreen2> {
                         imagePath: 'assets/images/2.svg',
                         title: 'Find The Best Deals',
                         subtitle:
-                        'Find the best deals on a fraction of the price of existing options.',
+                            'Find the best deals on a fraction of the price of existing options.',
                       ),
                       buildPage(
                         imagePath: 'assets/images/1.svg',
                         title: 'Plan Your Travel Now',
                         subtitle:
-                        'Book didirooms in twin cities, escape the ordinary.',
+                            'Book didirooms in twin cities, escape the ordinary.',
                       ),
                       buildPage(
                         imagePath: 'assets/images/3.svg',
                         title: 'Book Easily',
                         subtitle:
-                        'Book your favorite place in just a few clicks.',
+                            'Book your favorite place in just a few clicks.',
                       ),
                     ],
                   ),
@@ -108,7 +119,7 @@ class _loginScreen2State extends State<loginScreen2> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children:
-                  List.generate(3, (index) => buildDot(index, context)),
+                      List.generate(3, (index) => buildDot(index, context)),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20.0),
@@ -170,8 +181,8 @@ class _loginScreen2State extends State<loginScreen2> {
             height: 250,
             placeholderBuilder: (BuildContext context) =>
                 CircularProgressIndicator(
-                  strokeWidth: 1,
-                ),
+              strokeWidth: 1,
+            ),
           ),
           SizedBox(height: 20),
           Text(
@@ -218,8 +229,8 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-  final TextEditingController passengerPhoneController =
-  TextEditingController();
+  final TextEditingController PhoneController =
+      TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Country selectedCountry = Country(
@@ -259,10 +270,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               child: Container(
                 width: containerWidth,
                 height: containerHeight,
-                color: Colors.white,
+                color: Colors.yellow[30],
                 child: Padding(
                   padding:
-                  const EdgeInsets.symmetric(vertical: 25, horizontal: 35),
+                      const EdgeInsets.symmetric(vertical: 25, horizontal: 35),
                   child: ListView(
                     children: [
                       Align(
@@ -316,7 +327,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           children: [
                             TextFormField(
                               cursorColor: Colors.amber,
-                              controller: passengerPhoneController,
+                              controller: PhoneController,
+                              onChanged: (value){
+                                setState(() {
+                                  PhoneController.text=value;
+                                });
+                              },
                               keyboardType: TextInputType.phone,
                               style: TextStyle(
                                 fontSize: 18,
@@ -333,12 +349,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                   borderSide:
-                                  const BorderSide(color: Colors.black12),
+                                      const BorderSide(color: Colors.black12),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(18),
                                   borderSide:
-                                  const BorderSide(color: Colors.black12),
+                                      const BorderSide(color: Colors.black12),
                                 ),
                                 errorBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(18),
@@ -364,7 +380,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                         onTap: () {
                                           showCountryPicker(
                                             countryListTheme:
-                                            const CountryListThemeData(
+                                                const CountryListThemeData(
                                               bottomSheetHeight: 500,
                                             ),
                                             context: context,
@@ -387,22 +403,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   ),
                                 ),
                                 suffixIcon:
-                                passengerPhoneController.text.length > 9
-                                    ? Container(
-                                  height: 30,
-                                  width: 30,
-                                  margin: const EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.green,
-                                  ),
-                                  child: const Icon(
-                                    Icons.done,
-                                    color: Colors.white,
-                                    size: 18,
-                                  ),
-                                )
-                                    : null,
+                                    PhoneController.text.length > 9
+                                        ? Container(
+                                            height: 30,
+                                            width: 30,
+                                            margin: const EdgeInsets.all(10),
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.green,
+                                            ),
+                                            child: const Icon(
+                                              Icons.done,
+                                              color: Colors.white,
+                                              size: 18,
+                                            ),
+                                          )
+                                        : null,
                                 errorStyle: TextStyle(
                                   color: Colors.redAccent,
                                   fontWeight: FontWeight.w500,
@@ -460,6 +476,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   void sendPhoneNumber() {
-    // Your code to send phone number
+    final ap = Provider.of<AuthProvider>(context, listen: false);
+    String phoneNumber = PhoneController.text.trim();
+    ap.signInWithPhone(context, "+${selectedCountry.phoneCode}$phoneNumber");
   }
-}
+  }
+
