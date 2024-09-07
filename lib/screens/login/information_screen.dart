@@ -184,20 +184,17 @@ class _informationScreenState extends State<informationScreen> {
 
   void storeData() {
 
-
     final ap = Provider.of<AuthProvider>(context, listen: false);
     UserModel userModel =UserModel(
       firstName: _firstNameController.text.trim(),
       lastName: _lastNameController.text.trim(),
-      email: _lastNameController.text.trim(),
+      email: _emailController.text.trim(),
       gender: _selectedGender!,
       createdAt: "",
       phoneNumber: "",
       uid: "",
     );
-    if (_firstNameController.text.trim().isEmpty ||
-        _lastNameController.text.trim().isEmpty ||
-        _emailController.text.trim().isEmpty) {
+
       ap.saveUserDataToFirebase(
         context: context,
         userModel: userModel,
@@ -215,9 +212,7 @@ class _informationScreenState extends State<informationScreen> {
           );
         },
       );
-    }else{
-      showSnackBar(context, "Please fill all the requirements");
-    }
+
 
 
   }

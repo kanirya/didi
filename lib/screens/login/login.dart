@@ -24,16 +24,10 @@ class loginScreen extends StatelessWidget {
             CustomButton(
                 text: "Get Started",
                 onPressed: () {
-                  ap.isSignedIn == true
-                      ? Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(builder: (context) => homeScreen()),
-                          (Route<dynamic> route) => false,
-                        )
-                      : Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => loginScreen2()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => loginScreen2()));
                 })
           ],
         ),
@@ -232,6 +226,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final TextEditingController PhoneController =
       TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+ bool loading=false;
 
   Country selectedCountry = Country(
     phoneCode: "92",
@@ -254,6 +249,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
     final double containerWidth = 375;
     final double containerHeight = 700;
+
 
     return Scaffold(
       body: SafeArea(
@@ -455,7 +451,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                     sendPhoneNumber();
                                   }
                                 },
-                                child: Text(
+                                child:loading==true? CircularProgressIndicator(
+                                  color: Colors.black38,
+                                  strokeWidth: 2,
+                                ):Text(
                                   "Login",
                                   style: TextStyle(color: mainColor),
                                 ),
@@ -476,6 +475,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   void sendPhoneNumber() {
+    setState(() {
+      loading=true;
+    });
     final ap = Provider.of<AuthProvider>(context, listen: false);
     String phoneNumber = PhoneController.text.trim();
     ap.signInWithPhone(context, "+${selectedCountry.phoneCode}$phoneNumber");

@@ -33,6 +33,9 @@ class AuthProvider extends ChangeNotifier {
   void checkSign() async {
     final SharedPreferences s = await SharedPreferences.getInstance();
     _isSignedIn = s.getBool("is_signedin") ?? false;
+    if (_isSignedIn) {
+      getDataFromSP();  // Load user data if signed in
+    }
     notifyListeners();
   }
 
@@ -44,6 +47,8 @@ class AuthProvider extends ChangeNotifier {
   }
 
   void signInWithPhone(BuildContext context, String phoneNumber) async {
+    _isLoading=true;
+    notifyListeners();
     try {
       await _firebaseAuth.verifyPhoneNumber(
           phoneNumber: phoneNumber,
@@ -68,6 +73,7 @@ class AuthProvider extends ChangeNotifier {
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message.toString());
     }
+    _isLoading=false;
   }
 
   // verify otp
@@ -88,8 +94,9 @@ class AuthProvider extends ChangeNotifier {
         _uid = user.uid;
         onSuccess();
       }
-      _isLoading = false;
+
       notifyListeners();
+      _isLoading = false;
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message.toString());
       _isLoading = false;
@@ -117,11 +124,10 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
     try {
       {
-        userModel.createdAt = DateTime.now().toString();
+        userModel.createdAt = "${DateTime.now().day.toString()}-${DateTime.now().month.toString()}-${DateTime.now().year .toString()}";
         userModel.phoneNumber = _firebaseAuth.currentUser!.phoneNumber!;
         userModel.uid = _firebaseAuth.currentUser!.uid;
-      }
-      ;
+      };
       _userModel = userModel;
 
       // uploading to data base
@@ -152,7 +158,7 @@ class AuthProvider extends ChangeNotifier {
           lastName: snapshot['lastName'],
           gender: snapshot['gender'],
           createdAt: snapshot['createdAt'],
-          phoneNumber: snapshot['passengerPhoneNumber'],
+          phoneNumber: snapshot['phoneNumber'],
           uid: snapshot['uid'],
           email: snapshot['email']);
       _uid = userModel.uid;

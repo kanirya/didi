@@ -87,7 +87,7 @@ class _OtpScreenState extends State<OtpScreen> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
                       border:
-                      Border.all(color: Colors.yellow.shade200),
+                      Border.all(color: Colors.blueGrey),
                     ),
                     textStyle: const TextStyle(
                         fontSize: 20, fontWeight: FontWeight.w600)),

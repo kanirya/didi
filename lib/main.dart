@@ -1,5 +1,6 @@
 import 'package:didi/screens/login/login.dart';
 import 'package:didi/screens/login/provider/provider.dart';
+import 'package:didi/screens/login/splash.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -23,8 +24,10 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.yellowAccent),
           useMaterial3: true,
+
+
         ),
-        home: const loginScreen(),
+        home: SplashScreen(),
         debugShowCheckedModeBanner: false,
       ),
     );
